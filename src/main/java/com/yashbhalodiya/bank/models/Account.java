@@ -1,14 +1,24 @@
 package com.yashbhalodiya.bank.models;
 
+import java.util.Date;
+
 public class Account {
     private int accountNumber;
+    private String accountHolderName;
+    private String accountType;
     private double balance;
-    private String customerId;
+    private Date dateCreated;
+    private String branchName;
+    private String status;
 
-    public Account(int accountNumber, double balance, String customerId){
+    public Account(int accountNumber, String accountHolderName, String accountType, double balance, Date dateCreated, String branchName, String status) {
         this.accountNumber = accountNumber;
+        this.accountHolderName = accountHolderName;
+        this.accountType = accountType;
         this.balance = balance;
-        this.customerId = customerId;
+        this.dateCreated = dateCreated;
+        this.branchName = branchName;
+        this.status = status;
     }
 
     public int getAccountNumber() {
@@ -19,6 +29,22 @@ public class Account {
         this.accountNumber = accountNumber;
     }
 
+    public String getAccountHolderName() {
+        return accountHolderName;
+    }
+
+    public void setAccountHolderName(String accountHolderName) {
+        this.accountHolderName = accountHolderName;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+
     public double getBalance() {
         return balance;
     }
@@ -27,11 +53,31 @@ public class Account {
         this.balance = balance;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public Date getDateCreated() {
+        return dateCreated;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+
+
+
 }
