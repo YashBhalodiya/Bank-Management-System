@@ -3,12 +3,17 @@ package com.yashbhalodiya.bank.services;
 import com.yashbhalodiya.bank.models.Account;
 import com.yashbhalodiya.bank.repository.AccountRepository;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AccountServices {
     public AccountRepository accountRepository;
 
-    AccountServices(){
+    public AccountServices(){
         this.accountRepository = new AccountRepository();
     }
+
+    private Map<Integer, Account> accounts = new HashMap<>();
 
     // To open account
     public void openAccount(Account account){
@@ -23,18 +28,19 @@ public class AccountServices {
             accountRepository.closeAccount(accountNumber);
             System.out.println("Account Closed Successfully " + accountNumber);
         }else {
-            System.out.println("Account not found: " + accountNumber);
+            System.out.println("Account not found!");
         }
     }
 
     //To check balance in account
-    public double checkBalance(int accountNumber){
+    public void checkBalance(int accountNumber){
+        System.out.println("Checking balance for account number: " + accountNumber);
         Account account = accountRepository.findAccount(accountNumber);
-        if (account != null){
-            return account.getBalance();
-        }else {
-            System.out.println("Account not found!");
-            return 0;
+
+        if (account != null) {
+            System.out.println("Account found. Balance: " + account.getBalance());
+        } else {
+            System.out.println("Account not found for account number: " + accountNumber);
         }
     }
 
@@ -53,7 +59,7 @@ public class AccountServices {
     //To withdraw amount from account
     public void withdraw(int accountNumber, double amount){
         Account withdraw = accountRepository.findAccount(accountNumber);
-        if (withdraw != null && withdraw.getBalance() < amount){
+        if (withdraw != null && withdraw.getBalance() > amount){
             withdraw.setBalance(withdraw.getBalance() - amount);
             accountRepository.updateAccount(withdraw);
             System.out.println("Rs " + amount + " withdraw from account " + accountNumber);
@@ -66,7 +72,7 @@ public class AccountServices {
     public void transferFund(int fromAccountNo, int toAccountNo, double amount){
         Account fromAccount = accountRepository.findAccount(fromAccountNo);
         Account toAccount = accountRepository.findAccount(toAccountNo);
-        if (fromAccount != null && toAccount != null && fromAccount.getBalance() < amount && amount > 0){
+        if (fromAccount != null && toAccount != null && fromAccount.getBalance() > amount && amount > 0){
             fromAccount.setBalance(fromAccount.getBalance() - amount);
             toAccount.setBalance(toAccount.getBalance() + amount);
             accountRepository.updateAccount(fromAccount);
@@ -74,6 +80,17 @@ public class AccountServices {
             System.out.println("Transferred " + amount + " from account " + fromAccountNo + " to account " + toAccountNo);
         } else {
             System.out.println("Invalid account or insufficient fund");
+        }
+    }
+
+    public void showAllAccounts(){
+        Map<Integer, Account> accounts = accountRepository.getAllAccounts();
+        if (!accounts.isEmpty()){
+            for (Account account : accounts.values()) {
+                System.out.println(account);
+            }
+        }else {
+            System.out.println("No accounts available..");
         }
     }
 }

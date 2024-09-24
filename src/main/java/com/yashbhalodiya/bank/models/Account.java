@@ -77,7 +77,16 @@ public class Account {
         this.status = status;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accountNumber=" + accountNumber +
+                ", accountHolderName='" + accountHolderName + '\'' +
+                ", accountType='" + accountType + '\'' +
+                ", balance=" + balance +
+                ", dateCreated=" + dateCreated +
+                ", branchName='" + branchName + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }
