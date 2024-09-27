@@ -1,0 +1,1 @@
+Account{accountNumber=1, accountHolderName='Yash', accountType='Savings', balance=4000.0, dateCreated=Fri Sep 27 00:00:00 IST 2024, branchName='Anand', status='Active'}

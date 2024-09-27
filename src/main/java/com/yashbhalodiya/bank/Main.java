@@ -159,6 +159,4 @@ public class Main {
         accountServices.closeAccount(accountNumber);
     }
 
-
-    // TODO: Store data to txt file
 }

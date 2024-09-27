@@ -15,6 +15,7 @@ public class AccountServices {
     // To open account
     public void openAccount(Account account){
         accountRepository.saveAccount(account);
+        accountRepository.saveDataToFile("data/AccountData");
         System.out.println("Account Opened Successfully");
     }
 
