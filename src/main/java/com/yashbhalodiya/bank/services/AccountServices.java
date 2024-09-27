@@ -3,7 +3,6 @@ package com.yashbhalodiya.bank.services;
 import com.yashbhalodiya.bank.models.Account;
 import com.yashbhalodiya.bank.repository.AccountRepository;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class AccountServices {
@@ -12,8 +11,6 @@ public class AccountServices {
     public AccountServices(){
         this.accountRepository = new AccountRepository();
     }
-
-    private Map<Integer, Account> accounts = new HashMap<>();
 
     // To open account
     public void openAccount(Account account){
