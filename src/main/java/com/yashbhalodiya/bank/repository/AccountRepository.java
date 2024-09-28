@@ -1,10 +1,12 @@
 package com.yashbhalodiya.bank.repository;
 
+import com.yashbhalodiya.bank.database.DbConnection;
 import com.yashbhalodiya.bank.models.Account;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,19 +18,27 @@ public class AccountRepository {
     }
 
     BufferedWriter bw;
-    public void saveDataToFile(String fileName){
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
-            for (Account account : accounts.values()){
-                bw.write(account.toString());
-                bw.newLine();
-            }
-            System.out.println("Data Added Successfully!");
-        } catch (IOException e) {
+    public void saveDataToFile(Account account){
+        String sql = "INSERT INTO bank(account_number,account_holder_name,account_type,balance,date_created,branch_name,status) VALUES(?,?,?,?,?,?,?)";
+        try (Connection connection = DbConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1,account.getAccountNumber());
+                preparedStatement.setString(2,account.getAccountHolderName());
+                preparedStatement.setString(3,account.getAccountType());
+                preparedStatement.setDouble(4,account.getBalance());
+                preparedStatement.setDate(5, new java.sql.Date(account.getDateCreated().getTime()));
+                preparedStatement.setString(6,account.getBranchName());
+                preparedStatement.setString(7,account.getStatus());
+
+                preparedStatement.execute();
+            System.out.println("Account " + account.getAccountNumber() + " saved successfully!");
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public Account findAccount(int accountNumber){
+
         return accounts.get(accountNumber);
     }
 
@@ -51,6 +61,27 @@ public class AccountRepository {
     }
 
     public Map<Integer, Account> getAllAccounts() {
-        return new HashMap<>(accounts);
+        String sql = "SELECT * FROM bank";
+        Map<Integer, Account> accountMap = new HashMap<>();
+        try(Connection connection = DbConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery()){
+            while (resultSet.next()){
+                int accountNumber = resultSet.getInt("account_number");
+                String accountHolderName = resultSet.getString("account_holder_name");
+                String accountType = resultSet.getString("account_type");
+                double accountBalance = resultSet.getDouble("balance");
+                Date date_created = resultSet.getDate("date_created");
+                String branch_name = resultSet.getString("branch_name");
+                String status = resultSet.getString("status");
+
+                Account account = new Account(accountNumber,accountHolderName,accountType,accountBalance,date_created,branch_name,status);
+                accountMap.put(accountNumber,account);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return new HashMap<>(accountMap);
+//        return accountMap;
     }
 }
