@@ -4,8 +4,6 @@ import com.yashbhalodiya.bank.database.DbConnection;
 import com.yashbhalodiya.bank.models.Account;
 
 import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +15,7 @@ public class AccountRepository {
         accounts.put(account.getAccountNumber(), account);
     }
 
-    BufferedWriter bw;
-    public void saveDataToFile(Account account){
+    public void saveDataToDatabase(Account account){
         String sql = "INSERT INTO bank(account_number,account_holder_name,account_type,balance,date_created,branch_name,status) VALUES(?,?,?,?,?,?,?)";
         try (Connection connection = DbConnection.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -81,7 +78,6 @@ public class AccountRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return new HashMap<>(accountMap);
-//        return accountMap;
+        return accountMap;
     }
 }
